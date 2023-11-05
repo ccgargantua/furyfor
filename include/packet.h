@@ -2,10 +2,8 @@
 #define PACKET_H
 
 
+#include "compiler.h"
 #include "definitions.h"
-
-
-
 
 
 typedef union Packet_u
@@ -19,8 +17,8 @@ typedef union Packet_u
         ff_VarInt protocol_version;
         ff_String_t string;
         ff_UShort port;
-        // TODO ff_VarIntEnum (?) next_state;
-    } Handshake_sb ff_DEPRECATED("Unimplemented");
+        ff_VarIntEnum next_state;
+    } Handshake_sb;
 
     // TODO
     struct 
@@ -63,7 +61,7 @@ typedef union Packet_u
         ff_VarInt public_key_length;
         ff_ByteArray public_key;
         ff_VarInt verify_token_length;
-        //TODO ff_ByteArray verify_token;
+        ff_ByteArray verify_token;
     } EncryptionRequest_cb ff_DEPRECATED("Unimplemented");
 
     struct 
@@ -72,13 +70,12 @@ typedef union Packet_u
         ff_String username;
         ff_VarInt num_properties;
 
-        // TODO these are not valid types yet
-        // struct
-        // {
-        //     ff_String_Array name;
-        //     ff_String_Array value;
-        //     ff_Boolean_Array is_signed;
-        // } Propety;
+        struct
+        {
+            ff_StringArray name;
+            ff_StringArray value;
+            ff_BooleanArray is_signed;
+        } Propety;
     } LoginSuccess_cb ff_DEPRECATED("Unimplemented");
 
     struct 
@@ -90,37 +87,48 @@ typedef union Packet_u
     {
         ff_VarInt message_id;
         ff_Identifier_t channel;
-        // TODO ff_ByteArray data;
+        ff_ByteArray data;
     } LoginPluginRequest_cb ff_DEPRECATED("Unimplemented");
 
     struct 
     {
-        ff_String_t 
+        ff_String_t name;
+        ff_UUID uuid;
     } LoginStart_sb;
 
     struct 
     {
-
+        ff_VarInt secret_length;
+        ff_ByteArray shared_secret;
+        ff_VarInt token_length;
+        ff_ByteArray token;
     } EncryptionResponse_sb;
 
     struct 
     {
-
+        ff_VarInt id;
+        ff_Boolean successful;
+        ff_OptionalByteArray data;
     } LoginPluginResponse_sb;
 
     struct 
     {
-
+        // TODO nothing here. remove?
     } LoginAcknowledged_sb;
+
+    // *******************
+    // CONFIGURATION STATE
+    // *******************
 
     struct 
     {
-
+        ff_Identifier_t channel;
+        ff_ByteArray data;
     } ClientboundPluginMessageConfiguration_cb;
 
     struct 
     {
-
+        
     } DisconnectConfiguration_cb;
 
     struct 
