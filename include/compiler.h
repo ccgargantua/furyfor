@@ -27,7 +27,6 @@
 
     #define ff_FORCE_INLINE
     #define ff_DEPRECATED(msg)
-    #define ff_UNIMPLEMENTED_FUNC(t)
     #define ff_UNIMPLEMENTED_TYPE(t)
 
 
